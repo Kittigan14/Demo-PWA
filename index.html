@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Awesome PWA</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="apple-touch-icon" href="/assets/images/cartoon.png">
+</head>
+<body>
+    <header>
+        <h1>My Awesome PWA</h1>
+        <button id="theme-toggle">Toggle Dark Mode</button>
+    </header>
+
+    <main class="calculator-container">
+        <section class="feature-card operation-card">
+            <h2>Subtraction</h2>
+            <p>Subtract 1 from the number.</p>
+            <button id="subtract-btn" class="operation-btn">-</button>
+        </section>
+
+        <section class="feature-card result-card">
+            <h2>Result</h2>
+            <div id="result-display">0</div>
+        </section>
+
+        <section class="feature-card operation-card">
+            <h2>Addition</h2>
+            <p>Add 1 to the number.</p>
+            <button id="add-btn" class="operation-btn">+</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My PWA. All rights reserved.</p>
+    </footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully:', registration);
+                    })
+                    .catch(err => {
+                        console.log('Service Worker registration failed:', err);
+                    });
+            });
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+        }
+
+        function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                console.log('This browser does not support desktop notification');
+                return;
+            }
+
+            if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted.');
+                    }
+                });
+            }
+        }
+
+        requestNotificationPermission();
+
+        function showNumberNotification(title, bodyText) {
+            if (Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: bodyText,
+                    icon: '/assets/images/cartoon.png' 
+                });
+            }
+        }
+
+        const resultDisplay = document.getElementById('result-display');
+        const subtractBtn = document.getElementById('subtract-btn');
+        const addBtn = document.getElementById('add-btn');
+
+        let currentNumber = 0;
+
+        subtractBtn.addEventListener('click', () => {
+            currentNumber--;
+            resultDisplay.textContent = currentNumber;
+            
+            if (currentNumber < -10) {
+                showNumberNotification(
+                    'แจ้งเตือน!', 
+                    `ตอนนี้ตัวเลขเป็นจำนวนหลักสิบ (ติดลบ) แล้ว: ${currentNumber}`
+                );
+            }
+        });
+
+        addBtn.addEventListener('click', () => {
+            currentNumber++;
+            resultDisplay.textContent = currentNumber;
+
+            if (currentNumber > 10) {
+                showNumberNotification(
+                    'แจ้งเตือน!', 
+                    `ตอนนี้ตัวเลขเป็นจำนวนหลักสิบแล้ว: ${currentNumber}`
+                );
+            }
+        });
+    </script>
+</body>
+</html>

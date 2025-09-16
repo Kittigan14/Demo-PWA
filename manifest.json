@@ -1,0 +1,21 @@
+{
+  "name": "My Awesome PWA Demo",
+  "short_name": "Awesome PWA",
+  "description": "An enhanced demo of a Progressive Web App with more features.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196F3",
+  "icons": [
+    {
+      "src": "/assets/images/cartoon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/cartoon(1).png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
