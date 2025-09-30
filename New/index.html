@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>PWA Image Gallery</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Show Images</h1>
+            <div class="status" id="status">🔄 กำลังตรวจสอบ...</div>
+        </header>
+
+        <div class="controls">
+            <button id="loadBtn" onclick="loadNextImage()">📷 โหลดรูปถัดไป</button>
+            <button onclick="clearGallery()">🗑️ ล้างแกลเลอรี่</button>
+            <button onclick="installPWA()">📱 ติดตั้ง PWA</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+                <h3>ยังไม่มีรูปภาพ</h3>
+                <p>คลิก "โหลดรูปถัดไป" เพื่อเริ่มต้น</p>
+            </div>
+        </div>
+
+        <div class="storage-info">
+            <h3>💾 ข้อมูล Storage</h3>
+            <p id="storageInfo">รูปภาพจะถูกเก็บใน Memory สำหรับ Session นี้</p>
+        </div>
+    </div>
+
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal(event)">×</button>
+            <img id="modalImage" src="" alt="Full size image">
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
